@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-plugin-netlify-cms-paths",
+  "name": "@entr/gatsby-plugin-netlify-cms-paths",
   "version": "1.0.2",
   "keywords": [
     "gatsby-plugin",
@@ -13,10 +13,10 @@
     "relative"
   ],
   "main": "index.js",
-  "author": "Kennedy Rose <krose@escaladesports.com>",
+  "author": "Zlatko Zlatev <zlatko.zlatev@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/escaladesports/gatsby-plugin-netlify-cms-paths.git"
+    "url": "https://github.com/entr/gatsby-plugin-netlify-cms-paths.git"
   },
   "license": "MIT",
   "scripts": {
@@ -24,9 +24,10 @@
     "prepublishOnly": "npm run build",
     "reset": "esca-scripts reset",
     "test": "npm run build && esca-scripts test",
-    "travis": "opn https://travis-ci.org/escaladesports/gatsby-plugin-netlify-cms-paths/branches"
+    "travis": "opn https://travis-ci.org/entr/gatsby-plugin-netlify-cms-paths/branches"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "esca-scripts": "^1.4.0",
     "opn-cli": "^3.1.0"
   },
