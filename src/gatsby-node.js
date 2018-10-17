@@ -1,43 +1,42 @@
 const makeRelative = require(`./make-relative`)
 
+const isObject = (obj) => {
+  return obj === Object(obj);
+}
+
 const walkObject = async (obj, iteratee, ignoreKeys = []) => {
 	for (let prop in obj) {
-		if ( ignoreKeys.indexOf(prop) !== -1 ) {
+		if ( ! obj[prop] || typeof obj[prop].then === 'function' || ignoreKeys.indexOf(prop) !== -1 ) {
 			continue;
 		}
-
-		switch (typeof obj[prop]) {
-			case 'array':
-				obj[prop] = await walkArray(obj[prop], iteratee, ignoreKeys)
-				break;
-			case 'object':
-				obj[prop] = await walkObject(obj[prop], iteratee, ignoreKeys)
-				break;
-			default:
-				obj[prop] = await iteratee(obj[prop])
+		
+		if ( Array.isArray(obj[prop]) ) {
+			await walkArray(obj[prop], iteratee, ignoreKeys, true)
+		} else if ( isObject(obj[prop]) ) {
+			obj[prop] = await walkObject(obj[prop], iteratee, ignoreKeys)
+		} else {
+			obj[prop] = await iteratee(obj[prop])
 		}
+		
 	}
-
+	
 	return obj
 }
 
-const walkArray = async (arr, iteratee, ignoreKeys = []) => {
-	return arr.map( async (i) => {
-		let result
-
-		switch (typeof i) {
-			case 'array':
-				result = await walkArray(i, iteratee, ignoreKeys)
-				break;
-			case 'object':
-				result = await walkObject(i, iteratee, ignoreKeys)
-				break;
-			default:
-				result = await iteratee(i)
+const walkArray = async (arr, iteratee, ignoreKeys = [], tags = false) => {
+	arr.forEach( async (item, idx, a) => {
+		if ( typeof item.then === 'function' ) {
+			return
 		}
-
-		return result
-	} )
+		
+		if ( Array.isArray(item) ) {
+			a[idx] = await walkArray(item, iteratee, ignoreKeys)
+		} else if ( isObject(item) ) {
+			a[idx] = await walkObject(item, iteratee, ignoreKeys)
+		} else {
+			a[idx] = await iteratee(item)
+		}
+	})
 }
 
 exports.onCreateNode = async ({ node, getNode }, options) => {
