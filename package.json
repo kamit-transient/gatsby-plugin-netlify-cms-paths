@@ -12,7 +12,7 @@
     "uploads",
     "relative"
   ],
-  "main": "index.js",
+  "main": "src/index.js",
   "author": "Zlatko Zlatev <zlatko.zlatev@gmail.com>",
   "repository": {
     "type": "git",
@@ -22,7 +22,6 @@
   "scripts": {
     "build": "esca-scripts build --dist './' --no-remove",
     "prepublishOnly": "npm run build",
-    "prepare": "npm run build",
     "reset": "esca-scripts reset",
     "test": "npm run build && esca-scripts test",
     "travis": "opn https://travis-ci.org/entr/gatsby-plugin-netlify-cms-paths/branches"
