@@ -49,7 +49,7 @@ exports.onCreateNode = async ({ node, getNode }, options) => {
 	}
 	
 	if (node.internal.type === `MarkdownRemark`) {
-		nodeAbsPath = node.fileAbsolutePath
+		nodeAbsPath = node.fileAbsolutePath || node.internal.contentFilePath
 
 		if(typeof node.frontmatter === `object`) {
 			await walkObject(node.frontmatter, iteratee, commonProps)
